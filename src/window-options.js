@@ -1,3 +1,7 @@
+import { fileURLToPath } from 'node:url'
+
+const APP_ICON = fileURLToPath(new URL('../assets/icon.png', import.meta.url))
+
 export function createWindowOptions(platform = process.platform) {
   return {
     width: 1440,
@@ -7,8 +11,18 @@ export function createWindowOptions(platform = process.platform) {
     show: false,
     title: 'DeepSeek Harness',
     backgroundColor: '#f5f7fb',
-    titleBarStyle: 'default',
-    autoHideMenuBar: platform === 'win32',
+    icon: APP_ICON,
+    frame: false,
+    roundedCorners: true,
+    thickFrame: true,
+    hasShadow: true,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#f5f7fb',
+      symbolColor: '#34434d',
+      height: 36,
+    },
+    autoHideMenuBar: true,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,

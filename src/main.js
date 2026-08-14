@@ -7,6 +7,7 @@ const APP_NAME = 'DeepSeek Harness'
 let mainWindow
 let service
 let serviceUrl
+let overlayThemeTimer
 
 app.setName(APP_NAME)
 
@@ -34,11 +35,38 @@ function createWindow(url) {
   })
 
   mainWindow.once('ready-to-show', () => mainWindow?.show())
+  mainWindow.webContents.on('did-finish-load', () => {
+    void syncTitleBarOverlay()
+    if (overlayThemeTimer) clearInterval(overlayThemeTimer)
+    overlayThemeTimer = setInterval(() => void syncTitleBarOverlay(), 750)
+  })
   mainWindow.on('closed', () => {
+    if (overlayThemeTimer) clearInterval(overlayThemeTimer)
+    overlayThemeTimer = undefined
     mainWindow = undefined
   })
 
   void mainWindow.loadURL(url)
+}
+
+async function syncTitleBarOverlay() {
+  if (process.platform === 'darwin' || !mainWindow || mainWindow.isDestroyed()) return
+
+  let dark = false
+  try {
+    dark = await mainWindow.webContents.executeJavaScript(
+      "document.body?.hasAttribute('data-ds-dark-theme') || document.documentElement?.style.colorScheme === 'dark'",
+      true,
+    )
+  } catch {
+    return
+  }
+
+  mainWindow.setTitleBarOverlay({
+    color: dark ? '#171a1e' : '#f5f7fb',
+    symbolColor: dark ? '#e7eef1' : '#34434d',
+    height: 36,
+  })
 }
 
 async function launch() {

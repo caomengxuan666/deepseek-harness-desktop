@@ -72,6 +72,7 @@ DeepSeek Harness 已经提供完整的 Agent Runtime 和 Web UI。本项目不�
 - Linux 支持 x64 AppImage 和 deb
 - Windows 使用官方应用内目录浏览器，避免打包环境下的原生文件夹对话框异常
 - Windows 隐藏 Electron 默认的 File、Edit、View 和 Window 菜单栏
+- 使用高对比度应用图标和随主题变化的无边框原生窗口控制栏
 
 ### 安装说明
 
@@ -204,6 +205,7 @@ DeepSeek Harness already provides the complete agent runtime and Web UI. This pr
 - Provides Linux x64 AppImage and deb packages
 - Uses the official in-app directory browser on Windows to avoid packaged native-dialog worker failures
 - Removes the default Electron File, Edit, View, and Window menu bar on Windows
+- Uses a high-contrast app icon and theme-aware native controls in a frameless window
 
 ### Installation
 
