@@ -14,9 +14,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/steven-kid/deepseek-harness-desktop/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/steven-kid/deepseek-harness-desktop?style=flat-square&color=171513" /></a>
+  <a href="https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/caomengxuan666/deepseek-harness-desktop?style=flat-square&color=171513" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-171513.svg?style=flat-square" /></a>
-  <a href="https://github.com/steven-kid/deepseek-harness-desktop/actions/workflows/release.yml"><img alt="Release build" src="https://github.com/steven-kid/deepseek-harness-desktop/actions/workflows/release.yml/badge.svg" /></a>
+  <a href="https://github.com/caomengxuan666/deepseek-harness-desktop/actions/workflows/release.yml"><img alt="Release build" src="https://github.com/caomengxuan666/deepseek-harness-desktop/actions/workflows/release.yml/badge.svg" /></a>
   <img alt="macOS" src="https://img.shields.io/badge/macOS-Apple%20Silicon%20%7C%20Intel-171513.svg?style=flat-square" />
   <img alt="Windows" src="https://img.shields.io/badge/Windows-x64-171513.svg?style=flat-square" />
   <img alt="Linux" src="https://img.shields.io/badge/Linux-x64-171513.svg?style=flat-square" />
@@ -30,7 +30,9 @@
 
 DeepSeek Harness Desktop 将官方 DeepSeek Harness Web 体验封装为独立桌面应用。无需手动启动 CLI 或管理端口，打开应用即可使用完整 Harness 界面。
 
-本项目专注于桌面宿主能力，不 fork、不修改、不注入，也不重新实现 Harness UI。模型、会话、设置、插件和 Agent 能力均由官方 `@deepseek-ai/dsh` 提供。
+本仓库是 [steven-kid/deepseek-harness-desktop](https://github.com/steven-kid/deepseek-harness-desktop) 的社区 Fork，由 [caomengxuan666/deepseek-harness-desktop](https://github.com/caomengxuan666/deepseek-harness-desktop) 维护。桌面宿主的核心实现、构建配置和上游许可均保留。
+
+本项目只提供桌面宿主能力，不修改、不注入，也不重新实现 Harness UI。模型、会话、设置、插件和 Agent 能力均由官方 `@deepseek-ai/dsh` 提供。
 
 > [!IMPORTANT]
 > 本项目是非官方社区封装，目前仍属于早期版本，并依赖快速演进中的 `@deepseek-ai/dsh@0.1.0-rc.6`。macOS 构建尚未经过 Apple 公证，Windows 构建尚未进行商业代码签名。
@@ -39,14 +41,14 @@ DeepSeek Harness Desktop 将官方 DeepSeek Harness Web 体验封装为独立桌
 
 | 平台 | 架构 | 安装包 | 下载 |
 | --- | --- | --- | --- |
-| macOS | Apple Silicon | DMG | [下载 Apple Silicon 版本](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-arm64.dmg) |
-| macOS | Intel | DMG | [下载 Intel 版本](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-x64.dmg) |
-| Windows | x64 | 安装程序 | [下载 Windows 安装程序](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.exe) |
-| Windows | x64 | 便携 ZIP | [下载 Windows ZIP](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.zip) |
-| Linux | x64 | AppImage | [下载 AppImage](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-x86_64.AppImage) |
-| Debian / Ubuntu | x64 | deb | [下载 deb](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-amd64.deb) |
+| macOS | Apple Silicon | DMG | [下载 Apple Silicon 版本](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-arm64.dmg) |
+| macOS | Intel | DMG | [下载 Intel 版本](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-x64.dmg) |
+| Windows | x64 | 安装程序 | [下载 Windows 安装程序](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.exe) |
+| Windows | x64 | 便携 ZIP | [下载 Windows ZIP](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.zip) |
+| Linux | x64 | AppImage | [下载 AppImage](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-x86_64.AppImage) |
+| Debian / Ubuntu | x64 | deb | [下载 deb](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-amd64.deb) |
 
-全部当前和历史安装包可在 [GitHub Releases](https://github.com/steven-kid/deepseek-harness-desktop/releases) 查看。
+全部当前和历史安装包可在 [GitHub Releases](https://github.com/caomengxuan666/deepseek-harness-desktop/releases) 查看。
 
 ### 为什么需要桌面版
 
@@ -160,7 +162,9 @@ DeepSeek Harness Desktop
 
 DeepSeek Harness Desktop packages the official DeepSeek Harness Web experience as a standalone desktop application. It removes the need to start the CLI manually or manage local ports while preserving the full Harness interface.
 
-This project focuses on desktop hosting. It does not fork, modify, inject into, or reimplement the Harness UI. Models, sessions, settings, plugins, and agent capabilities remain provided by the official `@deepseek-ai/dsh` package.
+This repository is a community fork of [steven-kid/deepseek-harness-desktop](https://github.com/steven-kid/deepseek-harness-desktop), maintained at [caomengxuan666/deepseek-harness-desktop](https://github.com/caomengxuan666/deepseek-harness-desktop). The desktop host implementation, build configuration, and upstream license are preserved.
+
+This project provides desktop hosting only. It does not modify, inject into, or reimplement the Harness UI. Models, sessions, settings, plugins, and agent capabilities remain provided by the official `@deepseek-ai/dsh` package.
 
 > [!IMPORTANT]
 > This is an unofficial community wrapper and an early-stage project. It depends on the rapidly evolving `@deepseek-ai/dsh@0.1.0-rc.6`. The macOS builds are not Apple-notarized, and the Windows builds are not commercially code-signed.
@@ -169,14 +173,14 @@ This project focuses on desktop hosting. It does not fork, modify, inject into, 
 
 | Platform | Architecture | Package | Download |
 | --- | --- | --- | --- |
-| macOS | Apple Silicon | DMG | [Download for Apple Silicon](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-arm64.dmg) |
-| macOS | Intel | DMG | [Download for Intel Mac](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-x64.dmg) |
-| Windows | x64 | Setup installer | [Download Windows installer](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.exe) |
-| Windows | x64 | Portable ZIP | [Download Windows ZIP](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.zip) |
-| Linux | x64 | AppImage | [Download AppImage](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-x86_64.AppImage) |
-| Debian / Ubuntu | x64 | deb | [Download deb](https://github.com/steven-kid/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-amd64.deb) |
+| macOS | Apple Silicon | DMG | [Download for Apple Silicon](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-arm64.dmg) |
+| macOS | Intel | DMG | [Download for Intel Mac](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-x64.dmg) |
+| Windows | x64 | Setup installer | [Download Windows installer](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.exe) |
+| Windows | x64 | Portable ZIP | [Download Windows ZIP](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-windows-x64.zip) |
+| Linux | x64 | AppImage | [Download AppImage](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-x86_64.AppImage) |
+| Debian / Ubuntu | x64 | deb | [Download deb](https://github.com/caomengxuan666/deepseek-harness-desktop/releases/latest/download/DeepSeek-Harness-Desktop-0.3.1-linux-amd64.deb) |
 
-All current and historical packages are available on the [GitHub Releases page](https://github.com/steven-kid/deepseek-harness-desktop/releases).
+All current and historical packages are available on the [GitHub Releases page](https://github.com/caomengxuan666/deepseek-harness-desktop/releases).
 
 ### Why this project exists
 
