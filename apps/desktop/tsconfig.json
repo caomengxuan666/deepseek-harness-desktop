@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": false,
+    "allowJs": true,
+    "checkJs": false,
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": ["src/**/*"]
+}

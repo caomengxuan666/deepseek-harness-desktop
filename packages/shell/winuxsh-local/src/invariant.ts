@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@deepseek-ai/dsh-winuxsh-local`.
- * @module @deepseek-ai/dsh-winuxsh-local/invariant
+ * Package-owned invariant companion for `@cmx666/dsh-winuxsh-local`.
+ * @module @cmx666/dsh-winuxsh-local/invariant
  */
 
 /* jscpd:ignore-start */
 import type { Context } from '@deepseek-ai/cordis'
 import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-winuxsh-local'
+const PACKAGE_NAME = '@cmx666/dsh-winuxsh-local'
 
 /** Cordis companion plugin name. */
 export const name = 'winuxsh-local-invariant'

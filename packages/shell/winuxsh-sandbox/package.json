@@ -1,7 +1,7 @@
 {
-  "name": "@deepseek-ai/dsh-winuxsh-sandbox",
+  "name": "@cmx666/dsh-winuxsh-sandbox",
   "description": "Sandbox-consuming implementation of the DeepSeek Harness winuxsh executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
-  "version": "0.1.0-rc.5",
+  "version": "0.1.0-rc.6",
   "publishConfig": {
     "access": "public"
   },
@@ -32,20 +32,22 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-winuxsh-local": "workspace:^",
-    "@deepseek-ai/dsh-sandbox": "workspace:^",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@deepseek-ai/dsh-shell": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-sandbox": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-sandbox-policy": "^0.1.0-rc.6",
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-pwsh-sandbox": "^0.1.0-rc.6",
+    "@cmx666/dsh-winuxsh-local": "^0.1.0-rc.6"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-winuxsh-local": "workspace:^",
-    "@deepseek-ai/dsh-sandbox": "workspace:^",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:^",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@deepseek-ai/dsh-shell": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-sandbox": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-sandbox-policy": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-subprocess-local": "^0.1.0-rc.6",
+    "@deepseek-ai/cordis": "^4.0.1"
   }
 }

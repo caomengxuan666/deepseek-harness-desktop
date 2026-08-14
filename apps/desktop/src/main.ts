@@ -1,172 +1,152 @@
-/**
- * Electron shell for the local DSH Web runtime.
- *
- * The shell owns the desktop window and the lifetime of one built `dsh web`
- * child. The Web application remains the product UI and communicates with
- * the child through its existing loopback API.
- * @module @deepseek-ai/dsh-desktop/main
- */
-
+// @ts-nocheck
 import { app, BrowserWindow, dialog, Menu, shell } from 'electron'
-import { spawn, type ChildProcessByStdio } from 'node:child_process'
-import { existsSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
-import type { Readable } from 'node:stream'
-import { fileURLToPath } from 'node:url'
+import { spawn } from 'node:child_process'
+import { startDshService, resolveDshEntry } from './dsh-service.js'
+import { createWindowOptions } from './window-options.js'
 
-const REPOSITORY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..')
-const DEFAULT_CLI_ENTRY = join(REPOSITORY_ROOT, 'apps', 'cli', 'lib', 'bin.js')
-const APP_ICON = join(REPOSITORY_ROOT, 'apps', 'desktop', 'assets', 'icon.png')
-const STARTUP_TIMEOUT_MS = 30_000
-const SHUTDOWN_TIMEOUT_MS = 5_000
+const APP_NAME = 'DeepSeek Harness'
 
-type DshProcess = ChildProcessByStdio<null, Readable, Readable>
+let mainWindow
+let service
+let serviceUrl
+let overlayThemeTimer
 
-let dshProcess: DshProcess | undefined
-let stopping = false
+app.setName(APP_NAME)
 
-function cliEntry(): string {
-  const entry = process.env.DSH_DESKTOP_CLI ?? DEFAULT_CLI_ENTRY
-  if (!existsSync(entry)) {
-    throw new Error(`Desktop CLI entry is missing: ${entry}. Run the repository build first.`)
+function createWindow(url) {
+  if (process.platform === 'win32') Menu.setApplicationMenu(null)
+  mainWindow = new BrowserWindow(createWindowOptions())
+
+  if (process.platform === 'win32') {
+    mainWindow.setMenu(null)
+    mainWindow.setMenuBarVisibility(false)
   }
-  return entry
+
+  mainWindow.webContents.setWindowOpenHandler(({ url: externalUrl }) => {
+    void shell.openExternal(externalUrl)
+    return { action: 'deny' }
+  })
+  mainWindow.webContents.on('will-navigate', (event, nextUrl) => {
+    const currentUrl = mainWindow?.webContents.getURL()
+    if (currentUrl && new URL(nextUrl).origin !== new URL(currentUrl).origin) {
+      event.preventDefault()
+      void shell.openExternal(nextUrl)
+    }
+  })
+
+  mainWindow.once('ready-to-show', () => mainWindow?.show())
+  mainWindow.webContents.on('did-finish-load', () => {
+    void syncTitleBarOverlay()
+    if (overlayThemeTimer) clearInterval(overlayThemeTimer)
+    overlayThemeTimer = setInterval(() => void syncTitleBarOverlay(), 750)
+  })
+  mainWindow.on('closed', () => {
+    if (overlayThemeTimer) clearInterval(overlayThemeTimer)
+    overlayThemeTimer = undefined
+    mainWindow = undefined
+  })
+  void mainWindow.loadURL(url)
 }
 
-function waitForWebUrl(child: DshProcess): Promise<string> {
-  return new Promise((resolveUrl, reject) => {
-    let output = ''
-    let settled = false
-    const timeout = setTimeout(() => {
-      finish(new Error(`dsh web did not announce a URL within ${STARTUP_TIMEOUT_MS}ms.\n${output}`))
-    }, STARTUP_TIMEOUT_MS)
-
-    const finish = (error?: Error, url?: string): void => {
-      if (settled) return
-      settled = true
-      clearTimeout(timeout)
-      child.stdout.off('data', onStdout)
-      child.off('error', onError)
-      child.off('exit', onExit)
-      if (error !== undefined) reject(error)
-      else if (url !== undefined) resolveUrl(url)
-      else reject(new Error('dsh web exited before announcing a URL'))
-    }
-
-    const onStdout = (chunk: Buffer | string): void => {
-      output += chunk.toString()
-      const match = output.match(/^dsh web:\s+(https?:\/\/\S+)/m)
-      if (match?.[1] !== undefined) finish(undefined, match[1])
-    }
-    const onError = (error: Error): void => finish(error)
-    const onExit = (code: number | null, signal: NodeJS.Signals | null): void => {
-      finish(new Error(`dsh web exited before startup (code=${String(code)}, signal=${String(signal)}).\n${output}`))
-    }
-
-    child.stdout.on('data', onStdout)
-    child.on('error', onError)
-    child.on('exit', onExit)
+async function syncTitleBarOverlay() {
+  if (process.platform === 'darwin' || !mainWindow || mainWindow.isDestroyed()) return
+  let dark = false
+  try {
+    dark = await mainWindow.webContents.executeJavaScript(
+      "document.body?.hasAttribute('data-ds-dark-theme') || document.documentElement?.style.colorScheme === 'dark'",
+      true,
+    )
+  } catch {
+    return
+  }
+  mainWindow.setTitleBarOverlay({
+    color: dark ? '#171a1e' : '#f5f7fb',
+    symbolColor: dark ? '#e7eef1' : '#34434d',
+    height: 36,
   })
 }
 
-function startDsh(): Promise<string> {
-  const child = spawn(process.env.DSH_DESKTOP_NODE ?? 'node', [cliEntry(), 'web'], {
-    cwd: REPOSITORY_ROOT,
-    env: { ...process.env, DSH_DESKTOP: '1' },
+function installWinuxshProfile() {
+  if (process.env.DSH_DESKTOP_SKIP_WINUXSH_INSTALL === '1') return Promise.resolve()
+  const child = spawn(process.execPath, [
+    resolveDshEntry(),
+    'plugin',
+    '--profile',
+    'web',
+    'add',
+    '@cmx666/dsh-winuxsh-local@^0.1.0-rc.6',
+    '@cmx666/dsh-winuxsh-sandbox@^0.1.0-rc.6',
+  ], {
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', DSH_DESKTOP: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,
   })
-  dshProcess = child
-  child.stderr.on('data', chunk => process.stderr.write(`[dsh] ${chunk}`))
-  child.stdout.on('data', chunk => process.stdout.write(`[dsh] ${chunk}`))
-  return waitForWebUrl(child)
-}
-
-async function stopDsh(): Promise<void> {
-  const child = dshProcess
-  dshProcess = undefined
-  if (child === undefined || child.exitCode !== null) return
-
-  await new Promise<void>((resolveStop) => {
-    let settled = false
-    const finish = (): void => {
-      if (settled) return
-      settled = true
-      clearTimeout(timeout)
-      resolveStop()
-    }
-    const timeout = setTimeout(() => {
-      child.kill()
-      finish()
-    }, SHUTDOWN_TIMEOUT_MS)
-    child.once('exit', finish)
-    child.kill('SIGTERM')
+  return new Promise((resolve, reject) => {
+    let output = ''
+    child.stdout?.on('data', chunk => { output += chunk.toString() })
+    child.stderr?.on('data', chunk => { output += chunk.toString() })
+    child.once('error', reject)
+    child.once('exit', code => code === 0
+      ? resolve()
+      : reject(new Error(`Winuxsh profile installation failed (exit=${String(code)}).\n${output}`)))
   })
 }
 
-function createWindow(webUrl: string): BrowserWindow {
-  const window = new BrowserWindow({
-    title: 'DeepSeek Harness',
-    width: 1440,
-    height: 920,
-    minWidth: 980,
-    minHeight: 640,
-    backgroundColor: '#101114',
-    icon: APP_ICON,
-    autoHideMenuBar: true,
-    show: false,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: true,
+async function launch() {
+  await installWinuxshProfile()
+  service = startDshService({
+    electronExecutable: process.execPath,
+    environment: {
+      ...process.env,
+      NODE_OPTIONS: '',
+      DSH_DESKTOP: '1',
     },
   })
-  window.webContents.on('page-title-updated', event => event.preventDefault())
-  const origin = new URL(webUrl).origin
-  window.webContents.setWindowOpenHandler(({ url }) => {
-    void shell.openExternal(url)
-    return { action: 'deny' }
+  serviceUrl = await service.ready
+  createWindow(serviceUrl)
+}
+
+async function stopService() {
+  service?.stop()
+  service = undefined
+}
+
+const hasSingleInstanceLock = app.requestSingleInstanceLock()
+
+if (!hasSingleInstanceLock) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    if (!mainWindow) return
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.show()
+    mainWindow.focus()
   })
-  window.webContents.on('will-navigate', (event, url) => {
-    if (new URL(url).origin !== origin) {
-      event.preventDefault()
-      void shell.openExternal(url)
+  app.whenReady().then(async () => {
+    try {
+      await launch()
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      await dialog.showMessageBox({
+        type: 'error',
+        title: `${APP_NAME} failed to start`,
+        message: 'DeepSeek Harness could not start.',
+        detail: message,
+      })
+      await stopService()
+      app.quit()
     }
   })
-  void window.loadURL(webUrl)
-  window.once('ready-to-show', () => window.show())
-  return window
 }
 
-async function boot(): Promise<void> {
-  await app.whenReady()
-  app.setName('DeepSeek Harness')
-  app.setAppUserModelId('ai.deepseek.harness')
-  if (process.platform !== 'darwin') Menu.setApplicationMenu(null)
-  try {
-    const webUrl = await startDsh()
-    createWindow(webUrl)
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : String(error)
-    dialog.showErrorBox('DeepSeek Harness Desktop', detail)
-    await stopDsh()
-    app.quit()
-  }
-}
-
-app.on('before-quit', (event) => {
-  if (stopping) return
-  event.preventDefault()
-  stopping = true
-  void stopDsh().finally(() => app.exit(0))
+app.on('activate', () => {
+  if (!mainWindow && serviceUrl) createWindow(serviceUrl)
 })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) void boot()
+app.on('before-quit', () => {
+  void stopService()
 })
-
-void boot()

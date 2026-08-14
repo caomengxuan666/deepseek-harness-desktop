@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-winuxsh-local
+# @cmx666/dsh-winuxsh-local
 
 [English](README.md) | 中文
 
@@ -12,7 +12,7 @@ Winuxsh 是带 bash 兼容 `-c` 命令域的 Windows 原生 shell：命令字符
 
 ```yaml
 - id: bash
-  name: '@deepseek-ai/dsh-winuxsh-local'
+  name: '@cmx666/dsh-winuxsh-local'
   config:
     cwd: C:\path\to\workspace   # default: process.cwd()
     timeoutMs: 120000           # default foreground timeout

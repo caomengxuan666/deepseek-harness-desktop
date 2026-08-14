@@ -10,7 +10,19 @@ DeepSeek Harness 的首个桌面壳。Electron 管理一个原生窗口和一个
 npm run desktop:dev
 ```
 
-桌面壳要求 `apps/cli/lib/bin.js` 与 `apps/web/dist` 已存在。`DSH_DESKTOP_CLI` 可指定其他已构建的 CLI 入口，`DSH_DESKTOP_NODE` 可指定子进程使用的 Node 可执行文件。
+桌面壳默认使用 `node_modules/@deepseek-ai/dsh/lib/bin.js` 中已发布的 `@deepseek-ai/dsh` CLI，并自动加载 `config/winuxsh.patch.yml`。`DSH_DESKTOP_CLI` 可指定其他已构建的 CLI 入口，`DSH_DESKTOP_WINUXSH_PATCH` 可指定其他 patch 覆盖层，`DSH_DESKTOP_NODE` 可指定子进程使用的 Node 可执行文件。
+
+## Winuxsh
+
+Windows Desktop 使用 Winuxsh 提供的 `tool-bash`，不再使用 PowerShell 工具。请安装 Winuxsh 并将 `winuxsh.exe` 加入 `PATH`，或者在自定义 patch 覆盖层中设置 `winuxshPath`/`pwshPath`。模型的每次 Shell 调用都会通过 DSH subprocess 和 sandbox 服务以 `winuxsh -c <command>` 运行。
+
+Provider 包现在从 npm 安装。对于新的 DSH profile，在启动 Desktop 前执行：
+
+```sh
+pnpm add --dir "$DSH_HOME/profiles/web" @cmx666/dsh-winuxsh-local @cmx666/dsh-winuxsh-sandbox
+```
+
+Desktop patch 会启用 `winuxsh-sandbox` 和 `tool-bash`，并禁用 PowerShell 对应项。
 
 ## 模型提供方
 

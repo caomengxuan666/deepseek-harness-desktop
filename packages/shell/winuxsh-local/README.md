@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-winuxsh-local
+# @cmx666/dsh-winuxsh-local
 
 English | [中文](README.zh.md)
 
@@ -12,7 +12,7 @@ The package root exports the default and named `WinuxshLocalExecutor` plugin, it
 
 ```yaml
 - id: bash
-  name: '@deepseek-ai/dsh-winuxsh-local'
+  name: '@cmx666/dsh-winuxsh-local'
   config:
     cwd: C:\path\to\workspace   # default: process.cwd()
     timeoutMs: 120000           # default foreground timeout

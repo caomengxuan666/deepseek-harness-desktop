@@ -10,7 +10,7 @@
  * local-executor semantics. The tool layer owns the escalation approval flow
  * through `ctx.approval`; this executor reports the sandbox facts the tool
  * renders.
- * @module @deepseek-ai/dsh-winuxsh-sandbox
+ * @module @cmx666/dsh-winuxsh-sandbox
  */
 
 import { Context } from '@deepseek-ai/cordis'
@@ -26,8 +26,8 @@ import type {
   SandboxPolicy,
 } from '@deepseek-ai/dsh-sandbox'
 import type {} from '@deepseek-ai/dsh-sandbox-policy'
-import { WinuxshLocalExecutor } from '@deepseek-ai/dsh-winuxsh-local'
-import type { Config as LocalConfig } from '@deepseek-ai/dsh-winuxsh-local'
+import { WinuxshLocalExecutor } from '@cmx666/dsh-winuxsh-local'
+import type { Config as LocalConfig } from '@cmx666/dsh-winuxsh-local'
 import { classifyDenial, classifyRunnerFailure, isRunnerSpawnFailure, matchesSignature } from './helpers.ts'
 
 /**

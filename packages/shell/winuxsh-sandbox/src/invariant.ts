@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@deepseek-ai/dsh-winuxsh-sandbox`.
- * @module @deepseek-ai/dsh-winuxsh-sandbox/invariant
+ * Package-owned invariant companion for `@cmx666/dsh-winuxsh-sandbox`.
+ * @module @cmx666/dsh-winuxsh-sandbox/invariant
  */
 
 /* jscpd:ignore-start */
 import type { Context } from '@deepseek-ai/cordis'
 import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-winuxsh-sandbox'
+const PACKAGE_NAME = '@cmx666/dsh-winuxsh-sandbox'
 
 /** Cordis companion plugin name. */
 export const name = 'winuxsh-sandbox-invariant'
