@@ -1,7 +1,7 @@
 {
   "name": "@cmx666/dsh-winuxsh-bundle",
   "description": "DeepSeek Harness profile bundle that enables Winuxsh sandbox and tool-bash on Windows",
-  "version": "0.1.0-rc.6",
+  "version": "0.1.0-rc.8",
   "type": "module",
   "main": "cordis.patch.yml",
   "files": ["cordis.patch.yml", "README.md", "README.zh.md", "package.json"],
@@ -20,6 +20,7 @@
   "dependencies": {
     "@cmx666/dsh-winuxsh-local": "^0.1.0-rc.6",
     "@cmx666/dsh-winuxsh-sandbox": "^0.1.0-rc.6",
-    "@deepseek-ai/dsh-tool-bash": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-tool-bash": "^0.1.0-rc.6",
+    "@cmx666/dsh-client-ui-winuxsh": "^0.1.0-rc.7"
   }
 }

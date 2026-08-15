@@ -68,8 +68,7 @@ function installWinuxshProfile() {
         '--profile',
         'web',
         'add',
-        '@cmx666/dsh-winuxsh-local@^0.1.0-rc.6',
-        '@cmx666/dsh-winuxsh-sandbox@^0.1.0-rc.6',
+        '@cmx666/dsh-winuxsh-bundle@^0.1.0-rc.8',
     ], {
         env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', DSH_DESKTOP: '1' },
         stdio: ['ignore', 'pipe', 'pipe'],
