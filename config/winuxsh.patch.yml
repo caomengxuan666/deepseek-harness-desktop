@@ -1,5 +1,5 @@
 # Desktop-local Windows shell override.
-# Existing bundle rows are replaced directly; the new Provider row is inserted.
+# Existing bundle rows are replaced directly, including the Winuxsh provider.
 - id: pwsh-sandbox
   name: '@deepseek-ai/dsh-pwsh-sandbox'
   disabled: true
@@ -12,9 +12,8 @@
   name: '@deepseek-ai/dsh-tool-pwsh'
   disabled: true
 
-- insert:
-    - id: winuxsh-sandbox
-      name: '@cmx666/dsh-winuxsh-sandbox'
-      disabled: false
-      config:
-        pwshPath: winuxsh
+- id: winuxsh-sandbox
+  name: '@cmx666/dsh-winuxsh-sandbox'
+  disabled: false
+  config:
+    pwshPath: winuxsh
